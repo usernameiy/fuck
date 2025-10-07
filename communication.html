@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Communication Study Guide (Units 1 & 2)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Academia -->
+    <!-- Application Structure Plan: The application uses a classic two-column layout with a fixed navigation sidebar on the left and a dynamic content area on the right. This structure was chosen for its intuitive and user-friendly navigation, allowing a student to quickly jump between different topics without losing context or needing to scroll extensively. Key concepts are transformed from static text into interactive elements (like clickable diagrams and tabbed views) to promote active engagement and improve retention, which is more effective for exam preparation than passive reading. -->
+    <!-- Visualization & Content Choices: Since the source material is conceptual and text-based, traditional data charts are not applicable. Instead, information is visualized using interactive HTML/CSS components. Report Info: Shannon-Weaver Model -> Goal: Organize/Inform -> Viz: Interactive flowchart diagram -> Interaction: Click each component to see its definition. Justification: Visually breaks down the process flow. Report Info: 7Cs/ABCs -> Goal: Inform -> Viz: Clickable card grid -> Interaction: Click a card to reveal the principle's focus. Justification: Organizes principles into digestible chunks. Report Info: Document Formats -> Goal: Compare/Inform -> Viz: Tabbed interface -> Interaction: Click tabs to switch between document types. Justification: Allows for easy comparison of different formats. This approach avoids static text and enhances learning through exploration. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4; /* Warm Neutral Background */
+            color: #4A4A4A;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #EAE8E1;
+            border-left-color: #A88B79; /* Subtle Accent */
+            color: #333;
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .interactive-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .tab-button.active {
+            background-color: #A88B79;
+            color: #FFFFFF;
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 1.5rem;
+            color: #A88B79;
+            margin: 0 0.5rem;
+        }
+        .flow-arrow-down::after {
+            content: '↓';
+            font-size: 1.5rem;
+            color: #A88B79;
+            display: block;
+            text-align: center;
+        }
+        .flow-item {
+            border: 2px solid #DCD9D1;
+            background-color: #FFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-64 lg:w-72 bg-[#F1EEE9] border-r border-[#DCD9D1] p-4 md:p-6 shrink-0">
+            <h1 class="text-2xl font-bold text-[#A88B79] mb-1">Communication Skills</h1>
+            <p class="text-sm text-gray-500 mb-6">UHU1001 Study Guide</p>
+            <nav id="sidebar-nav" class="space-y-4">
+            </nav>
+        </aside>
+
+        <main id="main-content" class="flex-1 p-4 sm:p-6 lg:p-10">
+            <!-- Content will be dynamically inserted here -->
+        </main>
+    </div>
+
+<script>
+const studyData = {
+    unit1: {
+        title: "Unit 1: Workplace Communication (Foundations)",
+        topics: {
+            coreTheory: {
+                navTitle: "Core Theory & Models",
+                title: "Core Theory & Models",
+                intro: "This section covers the fundamental concepts of communication, including its definition, key functions, and a foundational model that explains the technical process of information transfer.",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">What is Communication?</h3>
+                            <p>A <strong>symbolic, interpretive, transactional, and contextual process</strong> where people create and share meaning through messages.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">4 Key Functions of Communication</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-gray-50 rounded-md"><strong>Inform:</strong> To convey data, facts, and knowledge.</div>
+                                <div class="p-4 bg-gray-50 rounded-md"><strong>Control:</strong> To guide behavior and ensure alignment with goals.</div>
+                                <div class="p-4 bg-gray-50 rounded-md"><strong>Motivate:</strong> To encourage performance and build morale.</div>
+                                <div class="p-4 bg-gray-50 rounded-md"><strong>Emotional Expression:</strong> To share feelings and build relationships.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Shannon-Weaver Model</h3>
+                            <p class="mb-4">This linear model visualizes communication as a one-way technical process. Click on each component to learn more about its role.</p>
+                            <div class="flex flex-col md:flex-row items-center justify-center flex-wrap gap-2 text-center">
+                                <div class="flow-item p-4 rounded-lg interactive-card" onclick="alert('Sender: The originator of the message who initiates communication.')"><strong>Sender</strong></div>
+                                <div class="flow-arrow hidden md:block"></div>
+                                <div class="flow-arrow-down block md:hidden"></div>
+                                <div class="flow-item p-4 rounded-lg interactive-card" onclick="alert('Encoder: Converts the message into a signal or code suitable for transmission.')"><strong>Encoder</strong></div>
+                                <div class="flow-arrow hidden md:block"></div>
+                                <div class="flow-arrow-down block md:hidden"></div>
+                                <div class="relative flow-item p-4 rounded-lg interactive-card" onclick="alert('Channel: The medium through which the signal travels. Noise is any interference that distorts the message within the channel.')"><span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-red-100 text-red-700 px-2 py-1 text-xs rounded-full">Noise</span><strong>Channel</strong></div>
+                                <div class="flow-arrow hidden md:block"></div>
+                                <div class="flow-arrow-down block md:hidden"></div>
+                                <div class="flow-item p-4 rounded-lg interactive-card" onclick="alert('Decoder: Converts the transmitted signal back into a message that can be understood.')"><strong>Decoder</strong></div>
+                                <div class="flow-arrow hidden md:block"></div>
+                                <div class="flow-arrow-down block md:hidden"></div>
+                                <div class="flow-item p-4 rounded-lg interactive-card" onclick="alert('Receiver: The person or system that interprets the decoded message.')"><strong>Receiver</strong></div>
+                            </div>
+                            <div class="mt-4 text-center text-gray-600">Feedback is the response sent from the receiver back to the sender.</div>
+                        </div>
+                    </div>
+                `
+            },
+            typesFlow: {
+                navTitle: "Types, Flow, & Barriers",
+                title: "Types, Flow, and Barriers of Communication",
+                intro: "Understanding the different types of communication, how information flows within an organization, and the common barriers that can disrupt this flow is crucial for effective workplace interaction.",
+                content: `
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Communication Types</h3>
+                            <div class="space-y-4">
+                                <div><h4 class="font-semibold">Formal</h4><p>Structured, follows hierarchy, ensures accountability. Examples: Memos, reports.</p></div>
+                                <div><h4 class="font-semibold">Informal (Grapevine)</h4><p>Spontaneous, social, unofficial, spreads rapidly. Examples: Rumors, chats.</p></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Dimensions of Flow</h3>
+                            <div class="space-y-2 text-sm">
+                                <p><strong>Downward (Top → Bottom):</strong> For instructions, policies, assignments.</p>
+                                <p><strong>Upward (Bottom → Top):</strong> For feedback, reports, requests.</p>
+                                <p><strong>Horizontal (Peer-to-Peer):</strong> For coordination and problem-solving.</p>
+                                <p><strong>Diagonal (Across Depts):</strong> For efficiency and speed by bypassing hierarchy.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 lg:col-span-2">
+                             <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Major Barriers</h3>
+                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 border-l-4 border-red-300 bg-red-50 rounded-r-lg"><strong>Semantic:</strong> Ambiguous words, jargon, faulty translations.</div>
+                                <div class="p-4 border-l-4 border-blue-300 bg-blue-50 rounded-r-lg"><strong>Psychological:</strong> Emotions (stress, anger), distrust.</div>
+                                <div class="p-4 border-l-4 border-yellow-300 bg-yellow-50 rounded-r-lg"><strong>Organizational:</strong> Rigid structure, excessive hierarchy, restrictive policies.</div>
+                                <div class="p-4 border-l-4 border-green-300 bg-green-50 rounded-r-lg"><strong>Physical/Environmental:</strong> Noise, poor lighting, faulty equipment.</div>
+                             </div>
+                        </div>
+                    </div>
+                `
+            },
+            principlesReading: {
+                navTitle: "Principles & Reading",
+                title: "Principles of Effective Communication & Reading Strategies",
+                intro: "Effective communication is guided by core principles that ensure clarity and impact. Strategic reading techniques help in comprehending and retaining information efficiently for academic success.",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">The 7Cs of Communication</h3>
+                            <p class="mb-4">Click on each principle to see its focus.</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
+                                ${['Clarity', 'Conciseness', 'Concreteness', 'Correctness', 'Consideration', 'Completeness', 'Courtesy'].map(c => `<div class="p-4 bg-gray-50 rounded-lg interactive-card cursor-pointer" onclick="alert(this.dataset.info)" data-info="${{Clarity: 'Straightforward, one idea per message.', Conciseness: 'Brief, no unnecessary words.', Concreteness: 'Specific, factual, supported by data.', Correctness: 'Grammatically and factually accurate.', Consideration: 'Audience-focused, empathetic.', Completeness: 'All essential information included (W-H questions).', Courtesy: 'Polite and respectful tone.'}[c]}"><strong>${c}</strong></div>`).join('')}
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mt-6 mb-2">ABCs of Communication (Simplified)</h4>
+                            <p class="text-sm">Focuses on three fundamentals: <strong>Accuracy</strong> (correct information), <strong>Brevity</strong> (concise message), and <strong>Clarity</strong> (easy to understand).</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Reading Strategies</h3>
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr><th class="p-3 bg-gray-100 font-semibold border-b">Strategy</th><th class="p-3 bg-gray-100 font-semibold border-b">Purpose</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Skimming</strong></td><td class="p-3 border-b">Getting a <strong>general sense</strong> or main idea of the text.</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Scanning</strong></td><td class="p-3 border-b">Searching rapidly for <strong>specific information</strong> (e.g., a date, a name).</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Churning</strong></td><td class="p-3 border-b">Reading slowly/carefully to <strong>fully understand</strong> nuances.</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>SQ3R Method</strong></td><td class="p-3 border-b"><strong>S</strong>urvey → <strong>Q</strong>uestion → <strong>R</strong>ead → <strong>R</strong>ecite → <strong>R</strong>eview (Active comprehension).</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `
+            },
+            interpersonal: {
+                navTitle: "Interpersonal Skills",
+                title: "Interpersonal Skills: Small Talk & Rapport",
+                intro: "Interpersonal communication involves the exchange of information between two or more people. In the workplace, 'soft' skills like small talk and rapport-building are essential for professional relationship development.",
+                content: `
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Small Talk</h3>
+                            <p class="text-sm mb-4">Light, casual conversation used to break the ice or show politeness. Helps ease tension without discussing deep or controversial matters.</p>
+                            <h4 class="font-semibold">Key Topics (Safe):</h4>
+                            <ul class="list-disc list-inside text-sm ml-2">
+                                <li>Weather or shared surroundings (office décor).</li>
+                                <li>Sports or current non-controversial events.</li>
+                            </ul>
+                            <h4 class="font-semibold mt-3">Avoid:</h4>
+                            <ul class="list-disc list-inside text-sm ml-2 text-red-700">
+                                <li>Private issues (salary, relationships).</li>
+                                <li>Controversial subjects (politics, religion).</li>
+                            </ul>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Rapport Building</h3>
+                            <p class="text-sm mb-4">A state of mutual understanding and connection that makes communication smoother and more effective.</p>
+                            <h4 class="font-semibold">Tips for Success:</h4>
+                            <ul class="list-disc list-inside text-sm ml-2">
+                                <li><strong>Listen Actively:</strong> Look for shared interests.</li>
+                                <li><strong>Mind Body Language:</strong> Maintain friendly eye contact (around 60%).</li>
+                                <li><strong>Show Empathy:</strong> Acknowledge their perspective.</li>
+                                <li><strong>Use Light Humor:</strong> A self-deprecating joke can ease tension.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            }
+        }
+    },
+    unit2: {
+        title: "Unit 2: Official Correspondence (Application)",
+        topics: {
+            writingTypes: {
+                navTitle: "4 Types of Writing",
+                title: "The Four Main Types of Writing",
+                intro: "Writers adapt their style based on the purpose and audience. Understanding these four types helps choose the right approach for any technical or professional document.",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-semibold text-[#A88B79] mb-2">Expository Writing</h4>
+                            <p class="text-sm"><strong>Purpose:</strong> To **explain or inform** using facts, evidence, and logical details **without personal opinions**.</p>
+                            <p class="text-xs mt-2">Example: An instruction manual or a research paper summarizing data.</p>
+                        </div>
+                        <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-semibold text-[#A88B79] mb-2">Descriptive Writing</h4>
+                            <p class="text-sm"><strong>Purpose:</strong> To **paint a vivid picture** of a person, place, or event by appealing to the senses.</p>
+                            <p class="text-xs mt-2">Example: A travel blog describing the colors, sounds, and aroma of a market.</p>
+                        </div>
+                        <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-semibold text-[#A88B79] mb-2">Persuasive Writing</h4>
+                            <p class="text-sm"><strong>Purpose:</strong> To **convince** readers to accept a viewpoint or take a specific action, often using arguments and emotional appeals.</p>
+                            <p class="text-xs mt-2">Example: A political campaign speech or a marketing email.</p>
+                        </div>
+                        <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-semibold text-[#A88B79] mb-2">Narrative Writing</h4>
+                            <p class="text-sm"><strong>Purpose:</strong> To **tell a story** with characters, dialogue, and a structured plot (beginning, middle, end).</p>
+                            <p class="text-xs mt-2">Example: A short story or an autobiography.</p>
+                        </div>
+                    </div>
+                `
+            },
+            writingStyle: {
+                navTitle: "5 Key Style Elements",
+                title: "Five Key Elements Defining Strong Technical Writing Style",
+                intro: "Good writing is clear, effective, and polished. These five elements ensure your professional and technical documents are engaging and credible.",
+                content: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 interactive-card cursor-pointer" onclick="alert('Parallelism means using a consistent pattern of words, phrases, or clauses within a sentence or list to create rhythm, balance, and clarity. Example: keep track, turn in, and keep a copy (NOT: keeping a copy).')">
+                            <h4 class="font-semibold text-[#A88B79]">1. Parallel Structure (Parallelism)</h4>
+                            <p class="text-sm text-gray-600">Click for details and an example.</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 interactive-card cursor-pointer" onclick="alert('Concise writing eliminates unnecessary words or phrases (fluff). Strategy: Replace wordy phrases (e.g., due to the fact that) with shorter substitutes (e.g., because). Eliminate redundancies (e.g., perfectly clear -> clear).')">
+                            <h4 class="font-semibold text-[#A88B79]">2. Conciseness</h4>
+                            <p class="text-sm text-gray-600">Click for strategies to remove wordiness and fillers.</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 interactive-card cursor-pointer" onclick="alert('Sentence Variety involves mixing Simple (one clause), Compound (two independent clauses), and Complex (one independent + one dependent clause) sentences to prevent monotony and keep the reader interested.')">
+                            <h4 class="font-semibold text-[#A88B79]">3. Sentence Variety</h4>
+                            <p class="text-sm text-gray-600">Click to review the importance of mixing sentence types.</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 interactive-card cursor-pointer" onclick="alert('Grammar and spelling errors destroy credibility. Check for: Run-on Sentences (two independent clauses without proper joiners) and Sentence Fragments (incomplete thought lacking a subject or verb).')">
+                            <h4 class="font-semibold text-[#A88B79]">4. Correct Spelling and Grammar</h4>
+                            <p class="text-sm text-gray-600">Click to review critical error types (Run-ons & Fragments).</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200 interactive-card cursor-pointer" onclick="alert('Effective paragraphs start with a Topic Sentence, provide Supporting Details (facts/examples), and end with a Concluding Sentence that links to the next idea. Focus on a single subject per paragraph.')">
+                            <h4 class="font-semibold text-[#A88B79]">5. Effective Paragraphing</h4>
+                            <p class="text-sm text-gray-600">Click to review the standard three-part structure.</p>
+                        </div>
+                    </div>
+                `
+            },
+            audienceBenefits: {
+                navTitle: "Audience Benefits & Customization",
+                title: "Exam-Critical: Audience Benefits and Message Customization",
+                intro: "This section covers advanced application of the 'Consideration' principle, focusing on customizing messages for impact, addressing questions Q9 and Q10 from the previous year's paper.",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Intrinsic vs. Extrinsic Reader Benefits (Q10)</h3>
+                            <p class="mb-4 text-sm">Benefits explain 'Why should the reader care?' They are better (more motivating) when they appeal to the reader's self-interest.</p>
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="p-3 bg-gray-100 font-semibold border-b">Type</th>
+                                        <th class="p-3 bg-gray-100 font-semibold border-b">Focus (Easy Definition)</th>
+                                        <th class="p-3 bg-gray-100 font-semibold border-b">Example</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Intrinsic (Internal)</strong></td><td class="p-3 border-b">How the reader **feels** (internal satisfaction, sense of achievement).</td><td class="p-3 border-b">Gaining new skills, feeling productive, job satisfaction.</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Extrinsic (External)</strong></td><td class="p-3 border-b">What the reader **gets** (tangible rewards, money, perks).</td><td class="p-3 border-b">Salary bonus, promotion, extra time off.</td></tr>
+                                </tbody>
+                            </table>
+                             <p class="mt-4 text-sm font-semibold">Which are better? <span class="text-green-700">Intrinsic benefits are generally considered better</span> because they motivate individuals internally, leading to long-term effort and engagement.</p>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Message Customization for Multiple Audiences (Q9)</h3>
+                            <p class="text-sm mb-4"><strong>Question:</strong> Should you include all reader benefits for multiple audiences?</p>
+                            <div class="p-4 border-l-4 border-red-500 bg-red-50 rounded-r-lg">
+                                <h4 class="font-bold text-red-700 mb-2">Answer: NO, you must be selective.</h4>
+                                <p class="text-sm">You should **NOT** include every benefit. The message must be customized (selective) for each specific audience group.</p>
+                                <p class="text-sm mt-2"><strong>Rationale (The 'Why'):</strong> Including irrelevant benefits confuses the reader, dilutes the message's impact, and violates the principle of **Conciseness** and **Consideration**.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            writingProcess: {
+                navTitle: "Writing Process & Structure",
+                title: "The Technical Writing Process and Structure",
+                intro: "The writing process is divided into three key stages: planning, drafting, and polishing. Understanding organizational structures helps present complex information logically.",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">The 3 Stages of Writing</h3>
+                            <div class="flex flex-col md:flex-row justify-between items-center text-center gap-4">
+                                <div class="w-full md:w-1/3 p-4 bg-blue-50 border-t-4 border-blue-400 rounded-b-lg">
+                                    <div class="text-2xl font-bold text-blue-600 mb-2">1</div>
+                                    <h4 class="font-semibold text-lg mb-1">Pre-Writing</h4>
+                                    <p class="text-sm">Planning, Audience Analysis, Brainstorming, Outlining.</p>
+                                </div>
+                                <div class="w-full md:w-1/3 p-4 bg-green-50 border-t-4 border-green-400 rounded-b-lg">
+                                    <div class="text-2xl font-bold text-green-600 mb-2">2</div>
+                                    <h4 class="font-semibold text-lg mb-1">Writing</h4>
+                                    <p class="text-sm">Drafting content with precise language, incorporating visuals.</p>
+                                </div>
+                                <div class="w-full md:w-1/3 p-4 bg-purple-50 border-t-4 border-purple-400 rounded-b-lg">
+                                    <div class="text-2xl font-bold text-purple-600 mb-2">3</div>
+                                    <h4 class="font-semibold text-lg mb-1">Post-Writing</h4>
+                                    <p class="text-sm">Revising, Editing, Proofreading.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                             <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Paragraph Structures</h3>
+                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div><h4 class="font-semibold">Inductive</h4><p class="text-sm">Specific examples → Broad conclusion.</p></div>
+                                <div><h4 class="font-semibold">Deductive</h4><p class="text-sm">General statement → Specific evidence.</p></div>
+                                <div><h4 class="font-semibold">Exposition</h4><p class="text-sm">Explains or informs using facts.</p></div>
+                                <div><h4 class="font-semibold">Spatial</h4><p class="text-sm">Organizes based on physical relationships.</p></div>
+                                <div><h4 class="font-semibold">Chronological</h4><p class="text-sm">Presents events in order of occurrence.</p></div>
+                                <div><h4 class="font-semibold">Linear</h4><p class="text-sm">Straightforward, sequential progression.</p></div>
+                                <div><h4 class="font-semibold">Interrupted</h4><p class="text-sm">Includes digressions, flashbacks, or side stories.</p></div>
+                             </div>
+                        </div>
+                    </div>
+                `
+            },
+            docFormats: {
+                navTitle: "Official Document Formats",
+                title: "Official Document Formats",
+                intro: "Explore the various formats used in professional correspondence, including core documents and comparison tools. Use the tabs below to switch between formats.",
+                content: `
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div id="tabs-container" class="flex border-b border-gray-200 flex-wrap">
+                            </div>
+                            <div id="tab-content-container" class="p-6">
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-semibold text-[#A88B79] mb-3">Précis vs. Paraphrasing</h3>
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr><th class="p-3 bg-gray-100 font-semibold border-b">Feature</th><th class="p-3 bg-gray-100 font-semibold border-b">Précis Writing</th><th class="p-3 bg-gray-100 font-semibold border-b">Paraphrasing</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Length</strong></td><td class="p-3 border-b">Must be much shorter (approx. 1/3 length).</td><td class="p-3 border-b">Usually similar in length to the original.</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Focus</strong></td><td class="p-3 border-b">Summarizing concisely, keeping only central ideas.</td><td class="p-3 border-b">Rewriting clearly, keeping all original details.</td></tr>
+                                    <tr class="hover:bg-gray-50"><td class="p-3 border-b"><strong>Goal</strong></td><td class="p-3 border-b">To present the *essence*.</td><td class="p-3 border-b">To present the *same meaning* in *different words*.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `
+            }
+        }
+    }
+};
+
+const docFormatsData = [
+    { name: "Formal Letter", goal: "Official communication (e.g., job application).", feature: "Must include Sender/Recipient Details, Date, Salutation, Body, Closing." },
+    { name: "Notice", goal: "Short, formal announcement to a specific group.", feature: "Must be labeled NOTICE; body must include What, When, Where, Who." },
+    { name: "Report (Analytical)", goal: "Analyzes data, draws conclusions, offers recommendations.", feature: "Includes Executive Summary, Methodology, Findings, and Recommendations." },
+    { name: "Précis Writing", goal: "Condenses the essence of a passage to ~1/3 length.", feature: "No personal opinions; must retain original meaning." },
+    { name: "Paraphrasing", goal: "Restates all ideas in own words; similar length to the original.", feature: "Rewrites the entire passage for clarity or integration." },
+    { name: "Agenda", goal: "Structured list of discussion items for a meeting.", feature: "Shared in advance to ensure preparation." },
+    { name: "Minutes of Meeting", goal: "Official record of discussions, decisions, and Action Items.", feature: "Tracks progress and ensures accountability." },
+    { name: "Technical Proposal", goal: "Persuades an audience to approve/fund a plan.", feature: "Key sections: Objectives, Scope, Methodology, Budget." }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarNav = document.getElementById('sidebar-nav');
+    const mainContent = document.getElementById('main-content');
+    let firstTopicId = '';
+
+    Object.keys(studyData).forEach(unitKey => {
+        const unit = studyData[unitKey];
+        const unitHeader = document.createElement('h2');
+        unitHeader.className = 'text-lg font-semibold text-gray-700 mt-4 mb-2';
+        unitHeader.textContent = unit.title;
+        sidebarNav.appendChild(unitHeader);
+
+        const topicList = document.createElement('ul');
+        topicList.className = 'space-y-1';
+
+        Object.keys(unit.topics).forEach(topicKey => {
+            const topic = unit.topics[topicKey];
+            const topicId = `${unitKey}-${topicKey}`;
+            if (!firstTopicId) firstTopicId = topicId;
+
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = '#';
+            link.className = 'sidebar-link block w-full text-left px-4 py-2 rounded-md text-gray-600 font-medium';
+            link.textContent = topic.navTitle;
+            link.dataset.contentId = topicId;
+            listItem.appendChild(link);
+            topicList.appendChild(listItem);
+
+            const contentSection = document.createElement('div');
+            contentSection.id = topicId;
+            contentSection.className = 'content-section';
+            contentSection.innerHTML = `
+                <h2 class="text-3xl font-bold mb-2">${topic.title}</h2>
+                <p class="text-lg text-gray-600 mb-8">${topic.intro}</p>
+                ${topic.content}
+            `;
+            mainContent.appendChild(contentSection);
+        });
+        sidebarNav.appendChild(topicList);
+    });
+    
+    function switchContent(contentId) {
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        const activeSection = document.getElementById(contentId);
+        const activeLink = document.querySelector(`.sidebar-link[data-content-id="${contentId}"]`);
+
+        if (activeSection) activeSection.classList.add('active');
+        if (activeLink) activeLink.classList.add('active');
+        
+        if (contentId.endsWith('-docFormats')) {
+            renderTabs();
+        }
+    }
+
+    sidebarNav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' && e.target.dataset.contentId) {
+            e.preventDefault();
+            switchContent(e.target.dataset.contentId);
+        }
+    });
+
+    switchContent(firstTopicId);
+});
+
+function renderTabs() {
+    const tabsContainer = document.getElementById('tabs-container');
+    const tabContentContainer = document.getElementById('tab-content-container');
+    
+    tabsContainer.innerHTML = ''; 
+    
+    docFormatsData.forEach((format, index) => {
+        const button = document.createElement('button');
+        button.className = 'tab-button px-4 py-3 font-medium text-sm text-gray-600 hover:bg-gray-100';
+        button.textContent = format.name;
+        button.dataset.index = index;
+        if (index === 0) button.classList.add('active');
+        tabsContainer.appendChild(button);
+    });
+    
+    function switchTab(index) {
+        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        tabsContainer.querySelector(`.tab-button[data-index='${index}']`).classList.add('active');
+        
+        const format = docFormatsData[index];
+        tabContentContainer.innerHTML = `
+            <h4 class="text-lg font-semibold mb-2">${format.name}</h4>
+            <p><strong class="text-gray-800">Primary Goal:</strong> ${format.goal}</p>
+            <p><strong class="text-gray-800">Key Feature:</strong> ${format.feature}</p>
+        `;
+    }
+
+    tabsContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            switchTab(e.target.dataset.index);
+        }
+    });
+
+    switchTab(0);
+}
+
+</script>
+</body>
+</html>
